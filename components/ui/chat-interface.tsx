@@ -31,6 +31,7 @@ const sampleAPIs = [
     method: "POST",
     endpoint: "/api/v1/auth/login",
     category: "Authentication",
+    scenarios: ["User Login", "SSO Integration", "Mobile App Auth"],
     inputs: [
       { name: "email", type: "string", required: true, description: "User email address" },
       { name: "password", type: "string", required: true, description: "User password" },
@@ -53,6 +54,7 @@ const sampleAPIs = [
     method: "POST",
     endpoint: "/api/v1/payments/charge",
     category: "Payment",
+    scenarios: ["E-commerce Checkout", "Subscription Billing", "Refund Processing"],
     inputs: [
       { name: "amount", type: "number", required: true, description: "Payment amount in cents" },
       { name: "currency", type: "string", required: true, description: "Currency code (USD, EUR, etc.)" },
@@ -76,6 +78,7 @@ const sampleAPIs = [
     method: "GET",
     endpoint: "/api/v1/analytics/report",
     category: "Analytics",
+    scenarios: ["Dashboard Reporting", "User Behavior Analysis", "Performance Monitoring"],
     inputs: [
       { name: "startDate", type: "string", required: true, description: "Report start date (ISO 8601)" },
       { name: "endDate", type: "string", required: true, description: "Report end date (ISO 8601)" },
@@ -116,6 +119,7 @@ export function ChatInterface({ sessionId }: ChatInterfaceProps) {
   const [selectedAPI, setSelectedAPI] = useState<typeof sampleAPIs[0] | null>(null)
   const [isArtifactOpen, setIsArtifactOpen] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+  const [isEndpointCopied, setIsEndpointCopied] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -177,6 +181,18 @@ export function ChatInterface({ sessionId }: ChatInterfaceProps) {
       await navigator.clipboard.writeText(JSON.stringify(selectedAPI.exampleResponse, null, 2))
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
+  const handleCopyEndpoint = async () => {
+    if (!selectedAPI) return
+    
+    try {
+      await navigator.clipboard.writeText(`${selectedAPI.method} ${selectedAPI.endpoint}`)
+      setIsEndpointCopied(true)
+      setTimeout(() => setIsEndpointCopied(false), 2000)
     } catch (err) {
       console.error('Failed to copy:', err)
     }
@@ -303,22 +319,58 @@ export function ChatInterface({ sessionId }: ChatInterfaceProps) {
           {selectedAPI && (
             <>
               <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
-                  {selectedAPI.name}
-                  <Badge variant="outline" className="rounded-xl">
-                    {selectedAPI.method}
-                  </Badge>
-                </SheetTitle>
-                <SheetDescription>{selectedAPI.description}</SheetDescription>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <SheetTitle className="flex items-center gap-2">
+                      {selectedAPI.name}
+                      <Badge variant="outline" className="rounded-xl">
+                        {selectedAPI.method}
+                      </Badge>
+                    </SheetTitle>
+                    <SheetDescription className="mt-2">{selectedAPI.description}</SheetDescription>
+                  </div>
+                  <Button className="rounded-2xl shrink-0">
+                    <Check className="mr-2 h-4 w-4" />
+                    Apply for Access
+                  </Button>
+                </div>
               </SheetHeader>
+
+              {/* Business Scenarios */}
+              {selectedAPI.scenarios && selectedAPI.scenarios.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-xs font-medium text-muted-foreground mb-2">Business Scenarios</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedAPI.scenarios.map((scenario, index) => (
+                      <Badge key={index} variant="secondary" className="rounded-xl text-xs">
+                        {scenario}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="mt-6 space-y-6">
                 {/* Endpoint */}
                 <div>
                   <h3 className="text-sm font-semibold mb-2">Endpoint</h3>
-                  <code className="block bg-muted px-3 py-2 rounded-xl text-sm">
-                    {selectedAPI.method} {selectedAPI.endpoint}
-                  </code>
+                  <div className="flex items-center gap-2">
+                    <code className="flex-1 block bg-muted px-3 py-2 rounded-xl text-sm">
+                      {selectedAPI.method} {selectedAPI.endpoint}
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleCopyEndpoint}
+                      className="h-9 w-9 rounded-lg shrink-0"
+                    >
+                      {isEndpointCopied ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Tabs for Parameters and Response */}
@@ -413,17 +465,6 @@ export function ChatInterface({ sessionId }: ChatInterfaceProps) {
                     </Card>
                   </TabsContent>
                 </Tabs>
-
-                {/* Apply Button */}
-                <div className="flex gap-2 pt-4">
-                  <Button className="flex-1 rounded-2xl">
-                    <Check className="mr-2 h-4 w-4" />
-                    Apply for Access
-                  </Button>
-                  <Button variant="outline" className="rounded-2xl" onClick={() => setIsArtifactOpen(false)}>
-                    Close
-                  </Button>
-                </div>
               </div>
             </>
           )}
