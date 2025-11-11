@@ -45,6 +45,258 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { APIDetailSheet, type APIDetail } from "@/components/ui/api-detail-sheet"
+import { cn } from "@/lib/utils"
+
+// Sample API data for recent launches
+const recentAPIs: APIDetail[] = [
+  {
+    id: 1,
+    name: "User Authentication API",
+    description: "Secure user authentication and authorization service",
+    method: "POST",
+    endpoint: "/api/v1/auth/login",
+    category: "Authentication",
+    scenarios: ["User Login", "SSO Integration", "Mobile App Auth"],
+    inputs: [
+      { name: "email", type: "string", required: true, description: "User email address" },
+      { name: "password", type: "string", required: true, description: "User password" },
+    ],
+    outputs: [
+      { name: "token", type: "string", description: "JWT authentication token" },
+      { name: "userId", type: "string", description: "Unique user identifier" },
+      { name: "expiresIn", type: "number", description: "Token expiration time in seconds" },
+    ],
+    exampleResponse: {
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      userId: "usr_1234567890",
+      expiresIn: 3600,
+    },
+  },
+  {
+    id: 2,
+    name: "Payment Processing API",
+    description: "Process secure payment transactions",
+    method: "POST",
+    endpoint: "/api/v1/payments/charge",
+    category: "Payment",
+    scenarios: ["E-commerce Checkout", "Subscription Billing", "Refund Processing"],
+    inputs: [
+      { name: "amount", type: "number", required: true, description: "Payment amount in cents" },
+      { name: "currency", type: "string", required: true, description: "Currency code (USD, EUR, etc.)" },
+      { name: "source", type: "string", required: true, description: "Payment source token" },
+    ],
+    outputs: [
+      { name: "transactionId", type: "string", description: "Unique transaction identifier" },
+      { name: "status", type: "string", description: "Transaction status" },
+      { name: "amount", type: "number", description: "Charged amount" },
+    ],
+    exampleResponse: {
+      transactionId: "txn_abc123xyz",
+      status: "succeeded",
+      amount: 5000,
+    },
+  },
+  {
+    id: 3,
+    name: "Data Analytics API",
+    description: "Retrieve analytics data and insights",
+    method: "GET",
+    endpoint: "/api/v1/analytics/report",
+    category: "Analytics",
+    scenarios: ["Dashboard Reporting", "User Behavior Analysis", "Performance Monitoring"],
+    inputs: [
+      { name: "startDate", type: "string", required: true, description: "Report start date (ISO 8601)" },
+      { name: "endDate", type: "string", required: true, description: "Report end date (ISO 8601)" },
+      { name: "metrics", type: "array", required: false, description: "Specific metrics to include" },
+    ],
+    outputs: [
+      { name: "data", type: "array", description: "Analytics data points" },
+      { name: "summary", type: "object", description: "Summary statistics" },
+      { name: "period", type: "object", description: "Time period information" },
+    ],
+    exampleResponse: {
+      data: [
+        { date: "2025-01-01", views: 1250, clicks: 340 },
+        { date: "2025-01-02", views: 1580, clicks: 420 },
+      ],
+      summary: { totalViews: 2830, totalClicks: 760, avgClickRate: 0.27 },
+      period: { start: "2025-01-01", end: "2025-01-02" },
+    },
+  },
+  {
+    id: 4,
+    name: "SMS Notification API",
+    description: "Send SMS notifications to users worldwide",
+    method: "POST",
+    endpoint: "/api/v1/notifications/sms",
+    category: "Notification",
+    scenarios: ["OTP Verification", "Marketing Campaigns", "Alert Notifications"],
+    inputs: [
+      { name: "phoneNumber", type: "string", required: true, description: "Recipient phone number" },
+      { name: "message", type: "string", required: true, description: "SMS message content" },
+      { name: "sender", type: "string", required: false, description: "Sender ID or phone number" },
+    ],
+    outputs: [
+      { name: "messageId", type: "string", description: "Unique message identifier" },
+      { name: "status", type: "string", description: "Delivery status" },
+      { name: "cost", type: "number", description: "Message cost in credits" },
+    ],
+    exampleResponse: {
+      messageId: "msg_xyz789abc",
+      status: "sent",
+      cost: 1.5,
+    },
+  },
+  {
+    id: 5,
+    name: "Image Recognition API",
+    description: "AI-powered image analysis and object detection",
+    method: "POST",
+    endpoint: "/api/v1/vision/analyze",
+    category: "AI/ML",
+    scenarios: ["Product Recognition", "Content Moderation", "Visual Search"],
+    inputs: [
+      { name: "imageUrl", type: "string", required: true, description: "URL of the image to analyze" },
+      { name: "features", type: "array", required: false, description: "Features to detect (labels, faces, text)" },
+    ],
+    outputs: [
+      { name: "labels", type: "array", description: "Detected objects and labels" },
+      { name: "confidence", type: "number", description: "Overall confidence score" },
+      { name: "metadata", type: "object", description: "Additional image metadata" },
+    ],
+    exampleResponse: {
+      labels: [
+        { name: "Person", confidence: 0.98 },
+        { name: "Outdoor", confidence: 0.95 },
+      ],
+      confidence: 0.96,
+      metadata: { width: 1920, height: 1080, format: "JPEG" },
+    },
+  },
+  {
+    id: 6,
+    name: "Geolocation API",
+    description: "Convert addresses to coordinates and vice versa",
+    method: "GET",
+    endpoint: "/api/v1/geo/geocode",
+    category: "Location",
+    scenarios: ["Store Locator", "Delivery Tracking", "Location-based Services"],
+    inputs: [
+      { name: "address", type: "string", required: true, description: "Address to geocode" },
+      { name: "language", type: "string", required: false, description: "Response language code" },
+    ],
+    outputs: [
+      { name: "latitude", type: "number", description: "Latitude coordinate" },
+      { name: "longitude", type: "number", description: "Longitude coordinate" },
+      { name: "formattedAddress", type: "string", description: "Standardized address" },
+    ],
+    exampleResponse: {
+      latitude: 37.7749,
+      longitude: -122.4194,
+      formattedAddress: "San Francisco, CA 94102, USA",
+    },
+  },
+]
+
+// Extended API list with developer info, launch date, and popularity for service table
+const allAPIs = [
+  {
+    ...recentAPIs[0],
+    developer: "TechCorp Inc.",
+    launchDate: "2024-12-15",
+    popularity: 9850,
+    status: "上线" as const,
+  },
+  {
+    ...recentAPIs[1],
+    developer: "PaymentHub",
+    launchDate: "2024-11-28",
+    popularity: 8720,
+    status: "上线" as const,
+  },
+  {
+    ...recentAPIs[2],
+    developer: "DataWise Analytics",
+    launchDate: "2025-01-05",
+    popularity: 7540,
+    status: "测试" as const,
+  },
+  {
+    ...recentAPIs[3],
+    developer: "MsgCloud Services",
+    launchDate: "2024-10-20",
+    popularity: 12300,
+    status: "上线" as const,
+  },
+  {
+    ...recentAPIs[4],
+    developer: "VisionAI Labs",
+    launchDate: "2025-01-10",
+    popularity: 6890,
+    status: "测试" as const,
+  },
+  {
+    ...recentAPIs[5],
+    developer: "MapTech Solutions",
+    launchDate: "2024-09-15",
+    popularity: 15600,
+    status: "上线" as const,
+  },
+  {
+    id: 7,
+    name: "Email Marketing API",
+    description: "Send bulk emails and manage campaigns",
+    method: "POST",
+    endpoint: "/api/v1/email/send",
+    category: "Marketing",
+    developer: "EmailPro",
+    launchDate: "2024-08-12",
+    popularity: 10200,
+    status: "上线" as const,
+    scenarios: ["Newsletter", "Transactional Email", "Drip Campaigns"],
+    inputs: [
+      { name: "recipients", type: "array", required: true, description: "List of recipient emails" },
+      { name: "subject", type: "string", required: true, description: "Email subject" },
+      { name: "body", type: "string", required: true, description: "Email HTML content" },
+    ],
+    outputs: [
+      { name: "campaignId", type: "string", description: "Campaign identifier" },
+      { name: "sentCount", type: "number", description: "Number of emails sent" },
+      { name: "status", type: "string", description: "Campaign status" },
+    ],
+    exampleResponse: {
+      campaignId: "camp_xyz123",
+      sentCount: 5000,
+      status: "delivered",
+    },
+  },
+  {
+    id: 8,
+    name: "Weather Forecast API",
+    description: "Get real-time weather data and forecasts",
+    method: "GET",
+    endpoint: "/api/v1/weather/forecast",
+    category: "Weather",
+    developer: "WeatherNow",
+    launchDate: "2024-07-05",
+    popularity: 18400,
+    status: "下线" as const,
+    scenarios: ["Travel Planning", "Event Scheduling", "Agriculture"],
+    inputs: [
+      { name: "location", type: "string", required: true, description: "City or coordinates" },
+      { name: "days", type: "number", required: false, description: "Number of forecast days" },
+    ],
+    outputs: [
+      { name: "current", type: "object", description: "Current weather conditions" },
+      { name: "forecast", type: "array", description: "Daily forecast data" },
+    ],
+    exampleResponse: {
+      current: { temp: 22, condition: "Sunny", humidity: 65 },
+      forecast: [{ day: "Monday", temp: 24, condition: "Partly Cloudy" }],
+    },
+  },
+]
 
 // Sample data for apps
 const apps = [
@@ -349,6 +601,13 @@ const communityPosts = [
 
 export function HomePage() {
   const [activeTab, setActiveTab] = useState("home")
+  const [selectedAPI, setSelectedAPI] = useState<APIDetail | null>(null)
+  const [isAPIDetailOpen, setIsAPIDetailOpen] = useState(false)
+
+  const handleAPIClick = (api: APIDetail) => {
+    setSelectedAPI(api)
+    setIsAPIDetailOpen(true)
+  }
 
   return (
         <main className="flex-1 p-4 md:p-6">
@@ -372,13 +631,9 @@ export function HomePage() {
                 </TabsTrigger>
               </TabsList>
               <div className="hidden md:flex gap-2">
-                <Button variant="outline" className="rounded-2xl">
-                  <Download className="mr-2 h-4 w-4" />
-                  Install App
-                </Button>
                 <Button className="rounded-2xl">
                   <Plus className="mr-2 h-4 w-4" />
-                  New Project
+                  New API
                 </Button>
               </div>
             </div>
@@ -401,23 +656,10 @@ export function HomePage() {
                     >
                       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div className="space-y-4">
-                          <Badge className="bg-white/20 text-white hover:bg-white/30 rounded-xl">Premium</Badge>
-                          <h2 className="text-3xl font-bold">Welcome to DesignAli Creative Suite</h2>
+                          <h2 className="text-3xl font-bold">欢迎来到 FusionHub</h2>
                           <p className="max-w-[600px] text-white/80">
-                            Unleash your creativity with our comprehensive suite of professional design tools and
-                            resources.
+                            数据 API 服务市场，集成应用、商品、创意、广告效果等数据服务，助你快速发现、接入高品质数据能力
                           </p>
-                          <div className="flex flex-wrap gap-3">
-                            <Button className="rounded-2xl bg-white text-indigo-700 hover:bg-white/90">
-                              Explore Plans
-                            </Button>
-                            <Button
-                              variant="outline"
-                              className="rounded-2xl bg-transparent border-white text-white hover:bg-white/10"
-                            >
-                              Take a Tour
-                            </Button>
-                          </div>
                         </div>
                         <div className="hidden lg:block">
                           <motion.div
@@ -458,166 +700,151 @@ export function HomePage() {
 
                   <section className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold">Recent Apps</h2>
+                      <h2 className="text-2xl font-semibold">最近上新</h2>
                       <Button variant="ghost" className="rounded-2xl">
                         View All
                       </Button>
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                      {apps
-                        .filter((app) => app.recent)
-                        .map((app) => (
-                          <motion.div key={app.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                            <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                              <CardHeader className="pb-2">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                    {app.icon}
-                                  </div>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-2xl">
-                                    <Star className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pb-2">
-                                <CardTitle className="text-lg">{app.name}</CardTitle>
-                                <CardDescription>{app.description}</CardDescription>
-                              </CardContent>
-                              <CardFooter>
-                                <Button variant="secondary" className="w-full rounded-2xl">
-                                  Open
-                                </Button>
-                              </CardFooter>
-                            </Card>
-                          </motion.div>
-                        ))}
-                    </div>
-                  </section>
-
-                  <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    <section className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-2xl font-semibold">Recent Files</h2>
-                        <Button variant="ghost" className="rounded-2xl">
-                          View All
-                        </Button>
-                      </div>
-                      <div className="rounded-3xl border">
-                        <div className="grid grid-cols-1 divide-y">
-                          {recentFiles.slice(0, 4).map((file) => (
-                            <motion.div
-                              key={file.name}
-                              whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-                              className="flex items-center justify-between p-4"
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted">
-                                  {file.icon}
-                                </div>
-                                <div>
-                                  <p className="font-medium">{file.name}</p>
-                                  <p className="text-sm text-muted-foreground">
-                                    {file.app} • {file.modified}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                {file.shared && (
-                                  <Badge variant="outline" className="rounded-xl">
-                                    <Users className="mr-1 h-3 w-3" />
-                                    {file.collaborators}
-                                  </Badge>
-                                )}
-                                <Button variant="ghost" size="sm" className="rounded-xl">
-                                  Open
-                                </Button>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    </section>
-
-                    <section className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-2xl font-semibold">Active Projects</h2>
-                        <Button variant="ghost" className="rounded-2xl">
-                          View All
-                        </Button>
-                      </div>
-                      <div className="rounded-3xl border">
-                        <div className="grid grid-cols-1 divide-y">
-                          {projects.slice(0, 3).map((project) => (
-                            <motion.div
-                              key={project.name}
-                              whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-                              className="p-4"
-                            >
-                              <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-medium">{project.name}</h3>
-                                <Badge variant="outline" className="rounded-xl">
-                                  Due {project.dueDate}
+                      {recentAPIs.slice(0, 6).map((api) => (
+                        <motion.div 
+                          key={api.id} 
+                          whileHover={{ scale: 1.02, y: -5 }} 
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleAPIClick(api)}
+                          className="cursor-pointer"
+                        >
+                          <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between gap-2">
+                                <Badge
+                                  variant="outline"
+                                  className={cn(
+                                    "rounded-xl",
+                                    api.method === "POST" && "border-blue-500 text-blue-500",
+                                    api.method === "GET" && "border-green-500 text-green-500",
+                                  )}
+                                >
+                                  {api.method}
+                                </Badge>
+                                <Badge variant="secondary" className="rounded-xl text-xs">
+                                  {api.category}
                                 </Badge>
                               </div>
-                              <p className="text-sm text-muted-foreground mb-3">{project.description}</p>
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between text-sm">
-                                  <span>Progress</span>
-                                  <span>{project.progress}%</span>
-                                </div>
-                                <Progress value={project.progress} className="h-2 rounded-xl" />
-                              </div>
-                              <div className="flex items-center justify-between mt-3 text-sm text-muted-foreground">
-                                <div className="flex items-center">
-                                  <Users className="mr-1 h-4 w-4" />
-                                  {project.members} members
-                                </div>
-                                <div className="flex items-center">
-                                  <FileText className="mr-1 h-4 w-4" />
-                                  {project.files} files
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-
-                  <section className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold">Community Highlights</h2>
-                      <Button variant="ghost" className="rounded-2xl">
-                        Explore
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                      {communityPosts.map((post) => (
-                        <motion.div key={post.title} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                          <Card className="overflow-hidden rounded-3xl">
-                            <div className="aspect-[4/3] overflow-hidden bg-muted">
-                              <img
-                                src={post.image || "/placeholder.svg"}
-                                alt={post.title}
-                                className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                              />
-                            </div>
-                            <CardContent className="p-4">
-                              <h3 className="font-semibold">{post.title}</h3>
-                              <p className="text-sm text-muted-foreground">by {post.author}</p>
-                              <div className="mt-2 flex items-center justify-between text-sm">
-                                <div className="flex items-center gap-2">
-                                  <Heart className="h-4 w-4 text-red-500" />
-                                  {post.likes}
-                                  <MessageSquare className="ml-2 h-4 w-4 text-blue-500" />
-                                  {post.comments}
-                                </div>
-                                <span className="text-muted-foreground">{post.time}</span>
-                              </div>
+                              <CardTitle className="text-base mt-2">{api.name}</CardTitle>
+                              <CardDescription className="text-xs line-clamp-2">{api.description}</CardDescription>
+                            </CardHeader>
+                            <CardContent className="pb-3">
+                              <code className="text-xs bg-muted px-2 py-1 rounded block truncate">
+                                {api.endpoint}
+                              </code>
                             </CardContent>
+                            <CardFooter>
+                              <Button variant="secondary" size="sm" className="w-full rounded-xl">
+                                查看详情
+                              </Button>
+                            </CardFooter>
                           </Card>
                         </motion.div>
                       ))}
+                    </div>
+                  </section>
+
+                  {/* Service List */}
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">服务列表</h2>
+                      <Button variant="ghost" className="rounded-2xl">
+                        查看全部
+                      </Button>
+                    </div>
+                    <div className="rounded-3xl border overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="bg-muted/50 border-b">
+                              <th className="text-left p-4 font-medium text-sm">服务名称</th>
+                              <th className="text-left p-4 font-medium text-sm">状态</th>
+                              <th className="text-left p-4 font-medium text-sm">开发者</th>
+                              <th className="text-left p-4 font-medium text-sm">上线时间</th>
+                              <th className="text-left p-4 font-medium text-sm">类别</th>
+                              <th className="text-right p-4 font-medium text-sm">操作</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y">
+                            {allAPIs.map((api) => (
+                              <motion.tr
+                                key={api.id}
+                                whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                                onClick={() => handleAPIClick(api)}
+                                className="cursor-pointer transition-colors"
+                              >
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="min-w-0 flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <p className="font-medium truncate">{api.name}</p>
+                                        <Badge
+                                          variant="outline"
+                                          className={cn(
+                                            "rounded-lg text-xs shrink-0",
+                                            api.method === "POST" && "border-blue-500 text-blue-500",
+                                            api.method === "GET" && "border-green-500 text-green-500",
+                                          )}
+                                        >
+                                          {api.method}
+                                        </Badge>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground truncate mt-1">{api.description}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <Badge 
+                                    variant={api.status === "上线" ? "default" : api.status === "测试" ? "secondary" : "outline"}
+                                    className={cn(
+                                      "rounded-xl text-xs",
+                                      api.status === "上线" && "bg-green-500 hover:bg-green-600",
+                                      api.status === "测试" && "bg-yellow-500 hover:bg-yellow-600 text-white",
+                                      api.status === "下线" && "bg-gray-400 text-white"
+                                    )}
+                                  >
+                                    {api.status}
+                                  </Badge>
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {api.developer}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {new Date(api.launchDate).toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })}
+                                </td>
+                                <td className="p-4">
+                                  <Badge variant="secondary" className="rounded-xl text-xs">
+                                    {api.category}
+                                  </Badge>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center justify-end">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="rounded-xl"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        // TODO: 处理操作逻辑
+                                      }}
+                                    >
+                                      {api.status === "上线" && "下线"}
+                                      {api.status === "测试" && "发布"}
+                                      {api.status === "下线" && "测试"}
+                                    </Button>
+                                  </div>
+                                </td>
+                              </motion.tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </section>
                 </TabsContent>
@@ -1398,6 +1625,13 @@ export function HomePage() {
               </motion.div>
             </AnimatePresence>
           </Tabs>
+
+          {/* API Detail Sheet */}
+          <APIDetailSheet
+            api={selectedAPI}
+            open={isAPIDetailOpen}
+            onOpenChange={setIsAPIDetailOpen}
+          />
         </main>
   )
 }

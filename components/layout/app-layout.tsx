@@ -76,7 +76,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
           <div>
             <h2 className="font-semibold">FusionHub</h2>
-            <p className="text-xs text-muted-foreground">API Center</p>
+            <p className="text-xs text-muted-foreground">Data API</p>
           </div>
         </div>
         <Button
@@ -246,7 +246,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </Button>
 
           <div className="flex flex-1 items-center justify-between">
-            <h1 className="text-xl font-semibold">UniAPI Center</h1>
+            <h1 className="text-xl font-semibold">Data API Center</h1>
           </div>
         </header>
 
