@@ -76,7 +76,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
           <div>
             <h2 className="font-semibold">FusionHub</h2>
-            <p className="text-xs text-muted-foreground">Data API</p>
+            <p className="text-xs text-muted-foreground">Data Map</p>
           </div>
         </div>
         <Button

@@ -46,6 +46,7 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { APIDetailSheet, type APIDetail } from "@/components/ui/api-detail-sheet"
+import { SearchInput } from "@/components/ui/search-input"
 import { cn } from "@/lib/utils"
 
 // Sample API data for recent launches
@@ -702,7 +703,7 @@ export function HomePage() {
                     <div className="flex items-center justify-between">
                       <h2 className="text-2xl font-semibold">最近上新</h2>
                       <Button variant="ghost" className="rounded-2xl">
-                        View All
+                        查看全部
                       </Button>
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -754,21 +755,19 @@ export function HomePage() {
                   <section className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h2 className="text-2xl font-semibold">服务列表</h2>
-                      <Button variant="ghost" className="rounded-2xl">
-                        查看全部
-                      </Button>
+                      <SearchInput placeholder="Search API..." />
                     </div>
                     <div className="rounded-3xl border overflow-hidden">
                       <div className="overflow-x-auto">
-                        <table className="w-full">
+                        <table className="w-full table-fixed">
                           <thead>
                             <tr className="bg-muted/50 border-b">
-                              <th className="text-left p-4 font-medium text-sm">服务名称</th>
-                              <th className="text-left p-4 font-medium text-sm">状态</th>
-                              <th className="text-left p-4 font-medium text-sm">开发者</th>
-                              <th className="text-left p-4 font-medium text-sm">上线时间</th>
-                              <th className="text-left p-4 font-medium text-sm">类别</th>
-                              <th className="text-right p-4 font-medium text-sm">操作</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">服务名称</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">状态</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">开发者</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">上线时间</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">类别</th>
+                              <th className="text-right p-4 font-medium text-sm w-1/6">操作</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y">
@@ -855,142 +854,216 @@ export function HomePage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="overflow-hidden rounded-3xl bg-gradient-to-r  from-violet-600 via-indigo-600 to-blue-600 p-8 text-white"
+                      className="overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 p-8 text-white"
                     >
                       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div className="space-y-2">
-                          <h2 className="text-3xl font-bold">Creative Apps Collection</h2>
+                          <h2 className="text-3xl font-bold">应用数据服务</h2>
                           <p className="max-w-[600px] text-white/80">
-                            Discover our full suite of professional design and creative applications.
+                            提供丰富的游戏&应用APP 数据服务接口，助力移动应用开发与数据分析
                           </p>
                         </div>
                         <div className="hidden lg:block">
-                          <motion.div
-                            className="relative h-40 w-40"
-                          >
+                          <motion.div className="relative h-40 w-40">
                             <motion.div
-                              animate={{ rotate: [0, 120, 240, 360] }}
-                              transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                              className="absolute inset-0"
-                            >
-                              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md" />
-                              <div className="absolute bottom-0 left-0 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md" />
-                              <div className="absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md" />
-                            </motion.div>
+                              animate={{ 
+                                scale: [1, 1.2, 1],
+                                rotate: [0, 180, 360]
+                              }}
+                              transition={{ 
+                                duration: 8,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "easeInOut"
+                              }}
+                              className="absolute inset-0 rounded-3xl bg-white/10 backdrop-blur-md"
+                            />
                             <motion.div
-                              animate={{ rotate: [360, 240, 120, 0] }}
-                              transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                              className="absolute inset-8"
-                            >
-                              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-xl bg-white/20" />
-                              <div className="absolute bottom-0 left-0 w-8 h-8 rounded-xl bg-white/20" />
-                              <div className="absolute bottom-0 right-0 w-8 h-8 rounded-xl bg-white/20" />
-                            </motion.div>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="w-6 h-6 rounded-lg bg-white/40" />
-                            </div>
+                              animate={{ 
+                                scale: [1.2, 1, 1.2],
+                                rotate: [360, 180, 0]
+                              }}
+                              transition={{ 
+                                duration: 8,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "easeInOut"
+                              }}
+                              className="absolute inset-6 rounded-3xl bg-white/20"
+                            />
+                            <motion.div
+                              animate={{ 
+                                scale: [1, 1.3, 1],
+                                opacity: [0.3, 0.5, 0.3]
+                              }}
+                              transition={{ 
+                                duration: 4,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "easeInOut"
+                              }}
+                              className="absolute inset-12 rounded-2xl bg-white/30"
+                            />
+                            <motion.div
+                              animate={{ 
+                                rotate: 360
+                              }}
+                              transition={{ 
+                                duration: 12,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "linear"
+                              }}
+                              className="absolute inset-16 rounded-full bg-white/40"
+                            />
                           </motion.div>
                         </div>
                       </div>
                     </motion.div>
                   </section>
 
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <Button variant="outline" className="rounded-2xl">
-                      All Categories
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      Creative
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      Video
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      Web
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      3D
-                    </Button>
-                    <div className="flex-1"></div>
-                    <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="search"
-                        placeholder="Search apps..."
-                        className="w-full rounded-2xl pl-9 md:w-[200px]"
-                      />
-                    </div>
-                  </div>
-
+                  {/* 最热门服务 */}
                   <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">New Releases</h2>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                      {apps
-                        .filter((app) => app.new)
-                        .map((app) => (
-                          <motion.div key={app.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                            <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                              <CardHeader className="pb-2">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                    {app.icon}
-                                  </div>
-                                  <Badge className="rounded-xl bg-amber-500">New</Badge>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pb-2">
-                                <CardTitle className="text-lg">{app.name}</CardTitle>
-                                <CardDescription>{app.description}</CardDescription>
-                                <div className="mt-2">
-                                  <div className="flex items-center justify-between text-sm">
-                                    <span>Installation</span>
-                                    <span>{app.progress}%</span>
-                                  </div>
-                                  <Progress value={app.progress} className="h-2 mt-1 rounded-xl" />
-                                </div>
-                              </CardContent>
-                              <CardFooter>
-                                <Button variant="secondary" className="w-full rounded-2xl">
-                                  {app.progress < 100 ? "Continue Install" : "Open"}
-                                </Button>
-                              </CardFooter>
-                            </Card>
-                          </motion.div>
-                        ))}
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">最热门服务</h2>
+                      <Button variant="ghost" className="rounded-2xl">
+                        查看全部
+                      </Button>
                     </div>
-                  </section>
-
-                  <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">All Apps</h2>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                      {apps.map((app) => (
-                        <motion.div key={app.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                          <Card className="overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300">
-                            <CardHeader className="pb-2">
-                              <div className="flex items-center justify-between">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                  {app.icon}
-                                </div>
-                                <Badge variant="outline" className="rounded-xl">
-                                  {app.category}
+                      {recentAPIs.slice(0, 6).map((api) => (
+                        <motion.div 
+                          key={api.id} 
+                          whileHover={{ scale: 1.02, y: -5 }} 
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleAPIClick(api)}
+                          className="cursor-pointer"
+                        >
+                          <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between gap-2">
+                                <Badge
+                                  variant="outline"
+                                  className={cn(
+                                    "rounded-xl",
+                                    api.method === "POST" && "border-blue-500 text-blue-500",
+                                    api.method === "GET" && "border-green-500 text-green-500",
+                                  )}
+                                >
+                                  {api.method}
+                                </Badge>
+                                <Badge variant="secondary" className="rounded-xl text-xs">
+                                  {api.category}
                                 </Badge>
                               </div>
+                              <CardTitle className="text-base mt-2">{api.name}</CardTitle>
+                              <CardDescription className="text-xs line-clamp-2">{api.description}</CardDescription>
                             </CardHeader>
-                            <CardContent className="pb-2">
-                              <CardTitle className="text-lg">{app.name}</CardTitle>
-                              <CardDescription>{app.description}</CardDescription>
+                            <CardContent className="pb-3">
+                              <code className="text-xs bg-muted px-2 py-1 rounded block truncate">
+                                {api.endpoint}
+                              </code>
                             </CardContent>
-                            <CardFooter className="flex gap-2">
-                              <Button variant="secondary" className="flex-1 rounded-2xl">
-                                {app.progress < 100 ? "Install" : "Open"}
-                              </Button>
-                              <Button variant="outline" size="icon" className="rounded-2xl">
-                                <Star className="h-4 w-4" />
+                            <CardFooter>
+                              <Button variant="secondary" size="sm" className="w-full rounded-xl">
+                                查看详情
                               </Button>
                             </CardFooter>
                           </Card>
                         </motion.div>
                       ))}
+                    </div>
+                  </section>
+
+                  {/* 服务列表 */}
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">服务列表</h2>
+                      <SearchInput placeholder="Search API..." />
+                    </div>
+                    <div className="rounded-3xl border overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full table-fixed">
+                          <thead>
+                            <tr className="bg-muted/50 border-b">
+                              <th className="text-left p-4 font-medium text-sm w-1/6">服务名称</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">状态</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">开发者</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">上线时间</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">类别</th>
+                              <th className="text-right p-4 font-medium text-sm w-1/6">操作</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y">
+                            {allAPIs.map((api) => (
+                              <motion.tr
+                                key={api.id}
+                                whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                                onClick={() => handleAPIClick(api)}
+                                className="cursor-pointer transition-colors"
+                              >
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="min-w-0 flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <p className="font-medium truncate">{api.name}</p>
+                                        <Badge
+                                          variant="outline"
+                                          className={cn(
+                                            "rounded-lg text-xs shrink-0",
+                                            api.method === "POST" && "border-blue-500 text-blue-500",
+                                            api.method === "GET" && "border-green-500 text-green-500",
+                                          )}
+                                        >
+                                          {api.method}
+                                        </Badge>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground truncate mt-1">{api.description}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <Badge 
+                                    variant={api.status === "上线" ? "default" : api.status === "测试" ? "secondary" : "outline"}
+                                    className={cn(
+                                      "rounded-xl text-xs",
+                                      api.status === "上线" && "bg-green-500 hover:bg-green-600",
+                                      api.status === "测试" && "bg-yellow-500 hover:bg-yellow-600 text-white",
+                                      api.status === "下线" && "bg-gray-400 text-white"
+                                    )}
+                                  >
+                                    {api.status}
+                                  </Badge>
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {api.developer}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {new Date(api.launchDate).toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })}
+                                </td>
+                                <td className="p-4">
+                                  <Badge variant="secondary" className="rounded-xl text-xs">
+                                    {api.category}
+                                  </Badge>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center justify-end">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="rounded-xl"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        // TODO: 处理操作逻辑
+                                      }}
+                                    >
+                                      {api.status === "上线" && "下线"}
+                                      {api.status === "测试" && "发布"}
+                                      {api.status === "下线" && "测试"}
+                                    </Button>
+                                  </div>
+                                </td>
+                              </motion.tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </section>
                 </TabsContent>
@@ -1001,63 +1074,67 @@ export function HomePage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="overflow-hidden rounded-3xl bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 p-8 text-white"
+                      className="overflow-hidden rounded-3xl bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 p-8 text-white"
                     >
                       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div className="space-y-2">
-                          <h2 className="text-3xl font-bold">Your Creative Assets</h2>
+                          <h2 className="text-3xl font-bold">广告创意数据服务</h2>
                           <p className="max-w-[600px] text-white/80">
-                            Access, manage, and share all your creative assets in one place.
+                            汇聚优质广告创意数据资源，赋能营销创意分析与优化决策
                           </p>
                         </div>
                         <div className="hidden lg:block">
-                          <motion.div
-                            className="relative h-40 w-40"
-                          >
+                          <motion.div className="relative h-40 w-40">
                             <motion.div
                               animate={{ 
-                                rotate: 360,
-                                scale: [1, 1.1, 1]
+                                y: [-10, 10, -10],
+                                rotate: [0, 15, 0, -15, 0]
                               }}
                               transition={{ 
-                                rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-                                scale: { duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
-                              }}
-                              className="absolute inset-0 rounded-3xl bg-white/10 backdrop-blur-md"
-                            />
-                            <motion.div
-                              animate={{ 
-                                rotate: -360,
-                                scale: [1, 0.9, 1]
-                              }}
-                              transition={{ 
-                                rotate: { duration: 15, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-                                scale: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: 0.5 }
-                              }}
-                              className="absolute inset-6 rounded-2xl bg-white/20"
-                            />
-                            <motion.div
-                              animate={{ 
-                                rotate: 360,
-                                scale: [1, 1.2, 1]
-                              }}
-                              transition={{ 
-                                rotate: { duration: 25, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-                                scale: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: 1 }
-                              }}
-                              className="absolute inset-12 rounded-xl bg-white/30"
-                            />
-                            <motion.div
-                              animate={{ 
-                                scale: [1, 1.3, 1],
-                                opacity: [0.4, 0.6, 0.4]
-                              }}
-                              transition={{ 
-                                duration: 3,
+                                duration: 6,
                                 repeat: Number.POSITIVE_INFINITY,
                                 ease: "easeInOut"
                               }}
-                              className="absolute inset-16 rounded-full bg-white/50"
+                              className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-md"
+                            />
+                            <motion.div
+                              animate={{ 
+                                y: [10, -10, 10],
+                                scale: [1, 1.15, 1]
+                              }}
+                              transition={{ 
+                                duration: 5,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "easeInOut",
+                                delay: 0.3
+                              }}
+                              className="absolute inset-4 rounded-full bg-white/20"
+                            />
+                            <motion.div
+                              animate={{ 
+                                y: [-8, 8, -8],
+                                x: [-5, 5, -5],
+                                rotate: [0, -20, 0, 20, 0]
+                              }}
+                              transition={{ 
+                                duration: 7,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "easeInOut",
+                                delay: 0.6
+                              }}
+                              className="absolute inset-8 rounded-full bg-white/30"
+                            />
+                            <motion.div
+                              animate={{ 
+                                scale: [1, 1.4, 1],
+                                opacity: [0.4, 0.6, 0.4]
+                              }}
+                              transition={{ 
+                                duration: 3.5,
+                                repeat: Number.POSITIVE_INFINITY,
+                                ease: "easeInOut"
+                              }}
+                              className="absolute inset-14 rounded-full bg-white/40"
                             />
                           </motion.div>
                         </div>
@@ -1065,96 +1142,151 @@ export function HomePage() {
                     </motion.div>
                   </section>
 
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <Button variant="outline" className="rounded-2xl">
-                      <FileText className="mr-2 h-4 w-4" />
-                      All Files
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Clock className="mr-2 h-4 w-4" />
-                      Recent
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Users className="mr-2 h-4 w-4" />
-                      Shared
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Star className="mr-2 h-4 w-4" />
-                      Favorites
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Trash className="mr-2 h-4 w-4" />
-                      Trash
-                    </Button>
-                    <div className="flex-1"></div>
-                    <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="search"
-                        placeholder="Search files..."
-                        className="w-full rounded-2xl pl-9 md:w-[200px]"
-                      />
-                    </div>
-                  </div>
-
+                  {/* 最热门服务 */}
                   <section className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold">All Files</h2>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="rounded-2xl">
-                          <PanelLeft className="mr-2 h-4 w-4" />
-                          Filter
-                        </Button>
-                        <Button variant="outline" size="sm" className="rounded-2xl">
-                          <ArrowUpDown className="mr-2 h-4 w-4" />
-                          Sort
-                        </Button>
-                      </div>
+                      <h2 className="text-2xl font-semibold">最热门服务</h2>
+                      <Button variant="ghost" className="rounded-2xl">
+                        查看全部
+                      </Button>
                     </div>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                      {recentAPIs.slice(0, 6).map((api) => (
+                        <motion.div 
+                          key={api.id} 
+                          whileHover={{ scale: 1.02, y: -5 }} 
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleAPIClick(api)}
+                          className="cursor-pointer"
+                        >
+                          <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between gap-2">
+                                <Badge
+                                  variant="outline"
+                                  className={cn(
+                                    "rounded-xl",
+                                    api.method === "POST" && "border-blue-500 text-blue-500",
+                                    api.method === "GET" && "border-green-500 text-green-500",
+                                  )}
+                                >
+                                  {api.method}
+                                </Badge>
+                                <Badge variant="secondary" className="rounded-xl text-xs">
+                                  {api.category}
+                                </Badge>
+                              </div>
+                              <CardTitle className="text-base mt-2">{api.name}</CardTitle>
+                              <CardDescription className="text-xs line-clamp-2">{api.description}</CardDescription>
+                            </CardHeader>
+                            <CardContent className="pb-3">
+                              <code className="text-xs bg-muted px-2 py-1 rounded block truncate">
+                                {api.endpoint}
+                              </code>
+                            </CardContent>
+                            <CardFooter>
+                              <Button variant="secondary" size="sm" className="w-full rounded-xl">
+                                查看详情
+                              </Button>
+                            </CardFooter>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </section>
 
+                  {/* 服务列表 */}
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">服务列表</h2>
+                      <SearchInput placeholder="Search API..." />
+                    </div>
                     <div className="rounded-3xl border overflow-hidden">
-                      <div className="bg-muted/50 p-3 hidden md:grid md:grid-cols-12 text-sm font-medium">
-                        <div className="col-span-6">Name</div>
-                        <div className="col-span-2">App</div>
-                        <div className="col-span-2">Size</div>
-                        <div className="col-span-2">Modified</div>
-                      </div>
-                      <div className="divide-y">
-                        {recentFiles.map((file) => (
-                          <motion.div
-                            key={file.name}
-                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-                            className="p-3 md:grid md:grid-cols-12 items-center flex flex-col md:flex-row gap-3 md:gap-0"
-                          >
-                            <div className="col-span-6 flex items-center gap-3 w-full md:w-auto">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted">
-                                {file.icon}
-                              </div>
-                              <div>
-                                <p className="font-medium">{file.name}</p>
-                                {file.shared && (
-                                  <div className="flex items-center text-xs text-muted-foreground">
-                                    <Users className="mr-1 h-3 w-3" />
-                                    Shared with {file.collaborators} people
+                      <div className="overflow-x-auto">
+                        <table className="w-full table-fixed">
+                          <thead>
+                            <tr className="bg-muted/50 border-b">
+                              <th className="text-left p-4 font-medium text-sm w-1/6">服务名称</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">状态</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">开发者</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">上线时间</th>
+                              <th className="text-left p-4 font-medium text-sm w-1/6">类别</th>
+                              <th className="text-right p-4 font-medium text-sm w-1/6">操作</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y">
+                            {allAPIs.map((api) => (
+                              <motion.tr
+                                key={api.id}
+                                whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                                onClick={() => handleAPIClick(api)}
+                                className="cursor-pointer transition-colors"
+                              >
+                                <td className="p-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="min-w-0 flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <p className="font-medium truncate">{api.name}</p>
+                                        <Badge
+                                          variant="outline"
+                                          className={cn(
+                                            "rounded-lg text-xs shrink-0",
+                                            api.method === "POST" && "border-blue-500 text-blue-500",
+                                            api.method === "GET" && "border-green-500 text-green-500",
+                                          )}
+                                        >
+                                          {api.method}
+                                        </Badge>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground truncate mt-1">{api.description}</p>
+                                    </div>
                                   </div>
-                                )}
-                              </div>
-                            </div>
-                            <div className="col-span-2 text-sm md:text-base">{file.app}</div>
-                            <div className="col-span-2 text-sm md:text-base">{file.size}</div>
-                            <div className="col-span-2 flex items-center justify-between w-full md:w-auto">
-                              <span className="text-sm md:text-base">{file.modified}</span>
-                              <div className="flex gap-1">
-                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
-                                  <Share2 className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
+                                </td>
+                                <td className="p-4">
+                                  <Badge 
+                                    variant={api.status === "上线" ? "default" : api.status === "测试" ? "secondary" : "outline"}
+                                    className={cn(
+                                      "rounded-xl text-xs",
+                                      api.status === "上线" && "bg-green-500 hover:bg-green-600",
+                                      api.status === "测试" && "bg-yellow-500 hover:bg-yellow-600 text-white",
+                                      api.status === "下线" && "bg-gray-400 text-white"
+                                    )}
+                                  >
+                                    {api.status}
+                                  </Badge>
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {api.developer}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {new Date(api.launchDate).toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })}
+                                </td>
+                                <td className="p-4">
+                                  <Badge variant="secondary" className="rounded-xl text-xs">
+                                    {api.category}
+                                  </Badge>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center justify-end">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="rounded-xl"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        // TODO: 处理操作逻辑
+                                      }}
+                                    >
+                                      {api.status === "上线" && "下线"}
+                                      {api.status === "测试" && "发布"}
+                                      {api.status === "下线" && "测试"}
+                                    </Button>
+                                  </div>
+                                </td>
+                              </motion.tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </section>
@@ -1170,9 +1302,9 @@ export function HomePage() {
                     >
                       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div className="space-y-2">
-                          <h2 className="text-3xl font-bold">Product Management</h2>
+                          <h2 className="text-3xl font-bold">电商商品数据服务</h2>
                           <p className="max-w-[600px] text-white/80">
-                            Manage and track all your products and inventory efficiently.
+                            整合电商平台商品数据接口，助力商品管理与市场分析决策
                           </p>
                         </div>
                         <div className="hidden lg:block">
@@ -1192,154 +1324,120 @@ export function HomePage() {
                     </motion.div>
                   </section>
 
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <Button variant="outline" className="rounded-2xl">
-                      <Layers className="mr-2 h-4 w-4" />
-                      All Projects
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Clock className="mr-2 h-4 w-4" />
-                      Recent
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Users className="mr-2 h-4 w-4" />
-                      Shared
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Archive className="mr-2 h-4 w-4" />
-                      Archived
-                    </Button>
-                    <div className="flex-1"></div>
-                    <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="search"
-                        placeholder="Search projects..."
-                        className="w-full rounded-2xl pl-9 md:w-[200px]"
-                      />
-                    </div>
-                  </div>
-
+                  {/* 最热门服务 */}
                   <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">Active Projects</h2>
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-                      {projects.map((project) => (
-                        <motion.div key={project.name} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                          <Card className="overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">最热门服务</h2>
+                      <Button variant="ghost" className="rounded-2xl">
+                        查看全部
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                      {recentAPIs.slice(0, 6).map((api) => (
+                        <motion.div
+                          key={api.id}
+                          whileHover={{ scale: 1.02, y: -5 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Card 
+                            className="overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleAPIClick(api)}
+                          >
                             <CardHeader>
                               <div className="flex items-center justify-between">
-                                <CardTitle>{project.name}</CardTitle>
                                 <Badge variant="outline" className="rounded-xl">
-                                  Due {project.dueDate}
+                                  {api.method}
+                                </Badge>
+                                <Badge variant="secondary" className="rounded-xl text-xs">
+                                  {api.category}
                                 </Badge>
                               </div>
-                              <CardDescription>{project.description}</CardDescription>
+                              <CardTitle className="mt-2">{api.name}</CardTitle>
+                              <CardDescription className="line-clamp-2">{api.description}</CardDescription>
                             </CardHeader>
-                            <CardContent className="space-y-4">
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between text-sm">
-                                  <span>Progress</span>
-                                  <span>{project.progress}%</span>
-                                </div>
-                                <Progress value={project.progress} className="h-2 rounded-xl" />
-                              </div>
-                              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                                <div className="flex items-center">
-                                  <Users className="mr-1 h-4 w-4" />
-                                  {project.members} members
-                                </div>
-                                <div className="flex items-center">
-                                  <FileText className="mr-1 h-4 w-4" />
-                                  {project.files} files
-                                </div>
-                              </div>
+                            <CardContent>
+                              <code className="text-xs bg-muted px-2 py-1 rounded block truncate">
+                                {api.endpoint}
+                              </code>
                             </CardContent>
-                            <CardFooter className="flex gap-2">
-                              <Button variant="secondary" className="flex-1 rounded-2xl">
-                                Open Project
-                              </Button>
-                              <Button variant="outline" size="icon" className="rounded-2xl">
-                                <Share2 className="h-4 w-4" />
-                              </Button>
-                            </CardFooter>
                           </Card>
                         </motion.div>
                       ))}
-                      <motion.div whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                        <Card className="flex h-full flex-col items-center justify-center rounded-3xl border border-dashed p-8 hover:border-primary/50 transition-all duration-300">
-                          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                            <Plus className="h-6 w-6" />
-                          </div>
-                          <h3 className="text-lg font-medium">Create New Project</h3>
-                          <p className="mb-4 text-center text-sm text-muted-foreground">
-                            Start a new creative project from scratch or use a template
-                          </p>
-                          <Button className="rounded-2xl">New Project</Button>
-                        </Card>
-                      </motion.div>
                     </div>
                   </section>
 
+                  {/* 服务列表 */}
                   <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">Project Templates</h2>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                      <Card className="overflow-hidden rounded-3xl">
-                        <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 p-6 text-white">
-                          <h3 className="text-lg font-medium">Brand Identity</h3>
-                          <p className="text-sm text-white/80">Complete brand design package</p>
-                        </div>
-                        <CardFooter className="flex justify-between p-4">
-                          <Badge variant="outline" className="rounded-xl">
-                            Popular
-                          </Badge>
-                          <Button variant="ghost" size="sm" className="rounded-xl">
-                            Use Template
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                      <Card className="overflow-hidden rounded-3xl">
-                        <div className="aspect-video bg-gradient-to-br from-amber-500 to-red-600 p-6 text-white">
-                          <h3 className="text-lg font-medium">Marketing Campaign</h3>
-                          <p className="text-sm text-white/80">Multi-channel marketing assets</p>
-                        </div>
-                        <CardFooter className="flex justify-between p-4">
-                          <Badge variant="outline" className="rounded-xl">
-                            New
-                          </Badge>
-                          <Button variant="ghost" size="sm" className="rounded-xl">
-                            Use Template
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                      <Card className="overflow-hidden rounded-3xl">
-                        <div className="aspect-video bg-gradient-to-br from-green-500 to-teal-600 p-6 text-white">
-                          <h3 className="text-lg font-medium">Website Redesign</h3>
-                          <p className="text-sm text-white/80">Complete website design workflow</p>
-                        </div>
-                        <CardFooter className="flex justify-between p-4">
-                          <Badge variant="outline" className="rounded-xl">
-                            Featured
-                          </Badge>
-                          <Button variant="ghost" size="sm" className="rounded-xl">
-                            Use Template
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                      <Card className="overflow-hidden rounded-3xl">
-                        <div className="aspect-video bg-gradient-to-br from-pink-500 to-rose-600 p-6 text-white">
-                          <h3 className="text-lg font-medium">Product Launch</h3>
-                          <p className="text-sm text-white/80">Product launch campaign assets</p>
-                        </div>
-                        <CardFooter className="flex justify-between p-4">
-                          <Badge variant="outline" className="rounded-xl">
-                            Popular
-                          </Badge>
-                          <Button variant="ghost" size="sm" className="rounded-xl">
-                            Use Template
-                          </Button>
-                        </CardFooter>
-                      </Card>
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">服务列表</h2>
+                      <SearchInput placeholder="Search API..." />
                     </div>
+                    <table className="w-full table-fixed">
+                      <thead>
+                        <tr className="bg-muted/50 border-b">
+                          <th className="text-left p-4 font-medium text-sm w-1/6">服务名称</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">状态</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">开发者</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">上线时间</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">类别</th>
+                          <th className="text-right p-4 font-medium text-sm w-1/6">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {allAPIs.map((api) => (
+                          <motion.tr
+                            key={api.id}
+                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                            className="cursor-pointer"
+                            onClick={() => handleAPIClick(api)}
+                          >
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">{api.name}</span>
+                                <Badge variant="outline" className="rounded-xl text-xs">
+                                  {api.method}
+                                </Badge>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <Badge 
+                                variant={api.status === "上线" ? "default" : api.status === "测试" ? "secondary" : "outline"}
+                                className={cn(
+                                  "rounded-xl text-xs",
+                                  api.status === "上线" && "bg-green-500 hover:bg-green-600",
+                                  api.status === "测试" && "bg-yellow-500 hover:bg-yellow-600 text-white",
+                                  api.status === "下线" && "bg-gray-400 text-white"
+                                )}
+                              >
+                                {api.status}
+                              </Badge>
+                            </td>
+                            <td className="p-4 text-sm">{api.developer}</td>
+                            <td className="p-4 text-sm text-muted-foreground">{api.launchDate}</td>
+                            <td className="p-4">
+                              <Badge variant="secondary" className="rounded-xl text-xs">
+                                {api.category}
+                              </Badge>
+                            </td>
+                            <td className="p-4 text-right">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-xl"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  // TODO: 处理操作逻辑
+                                }}
+                              >
+                                {api.status === "上线" && "下线"}
+                                {api.status === "测试" && "发布"}
+                                {api.status === "下线" && "测试"}
+                              </Button>
+                            </td>
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </section>
                 </TabsContent>
 
@@ -1353,9 +1451,9 @@ export function HomePage() {
                     >
                       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div className="space-y-2">
-                          <h2 className="text-3xl font-bold">Customer Management</h2>
+                          <h2 className="text-3xl font-bold">客户数据服务</h2>
                           <p className="max-w-[600px] text-white/80">
-                            Manage customer relationships, orders, and support efficiently.
+                            提供客户关系管理数据接口，支持客户行为分析与精准营销
                           </p>
                         </div>
                         <div className="hidden lg:block">
@@ -1407,219 +1505,120 @@ export function HomePage() {
                     </motion.div>
                   </section>
 
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <Button variant="outline" className="rounded-2xl">
-                      <Play className="mr-2 h-4 w-4" />
-                      All Tutorials
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      Courses
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Lightbulb className="mr-2 h-4 w-4" />
-                      Tips & Tricks
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <TrendingUp className="mr-2 h-4 w-4" />
-                      Trending
-                    </Button>
-                    <Button variant="outline" className="rounded-2xl">
-                      <Bookmark className="mr-2 h-4 w-4" />
-                      Saved
-                    </Button>
-                    <div className="flex-1"></div>
-                    <div className="relative w-full md:w-auto mt-3 md:mt-0">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="search"
-                        placeholder="Search tutorials..."
-                        className="w-full rounded-2xl pl-9 md:w-[200px]"
-                      />
-                    </div>
-                  </div>
-
+                  {/* 最热门服务 */}
                   <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">Featured Tutorials</h2>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {tutorials.slice(0, 3).map((tutorial) => (
-                        <motion.div key={tutorial.title} whileHover={{ scale: 1.02, y: -5 }} whileTap={{ scale: 0.98 }}>
-                          <Card className="overflow-hidden rounded-3xl">
-                            <div className="aspect-video overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative">
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <Button size="icon" variant="secondary" className="h-14 w-14 rounded-full">
-                                  <Play className="h-6 w-6" />
-                                </Button>
-                              </div>
-                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 text-white">
-                                <Badge className="bg-white/20 text-white hover:bg-white/30 rounded-xl">
-                                  {tutorial.category}
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold">最热门服务</h2>
+                      <Button variant="ghost" className="rounded-2xl">
+                        查看全部
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                      {recentAPIs.slice(0, 6).map((api) => (
+                        <motion.div
+                          key={api.id}
+                          whileHover={{ scale: 1.02, y: -5 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Card 
+                            className="overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300 cursor-pointer"
+                            onClick={() => handleAPIClick(api)}
+                          >
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <Badge variant="outline" className="rounded-xl">
+                                  {api.method}
                                 </Badge>
-                                <h3 className="mt-2 text-lg font-medium">{tutorial.title}</h3>
+                                <Badge variant="secondary" className="rounded-xl text-xs">
+                                  {api.category}
+                                </Badge>
                               </div>
-                            </div>
-                            <CardContent className="p-4">
-                              <p className="text-sm text-muted-foreground">{tutorial.description}</p>
-                              <div className="mt-4 flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  <Avatar className="h-6 w-6">
-                                    <AvatarFallback>{tutorial.instructor.charAt(0)}</AvatarFallback>
-                                  </Avatar>
-                                  <span className="text-sm">{tutorial.instructor}</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <Clock className="h-4 w-4" />
-                                  {tutorial.duration}
-                                </div>
-                              </div>
+                              <CardTitle className="mt-2">{api.name}</CardTitle>
+                              <CardDescription className="line-clamp-2">{api.description}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <code className="text-xs bg-muted px-2 py-1 rounded block truncate">
+                                {api.endpoint}
+                              </code>
                             </CardContent>
-                            <CardFooter className="flex items-center justify-between border-t p-4">
-                              <Badge variant="outline" className="rounded-xl">
-                                {tutorial.level}
-                              </Badge>
-                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                <Eye className="h-4 w-4" />
-                                {tutorial.views} views
-                              </div>
-                            </CardFooter>
                           </Card>
                         </motion.div>
                       ))}
                     </div>
                   </section>
 
+                  {/* 服务列表 */}
                   <section className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold">Popular Courses</h2>
-                      <Button variant="ghost" className="rounded-2xl">
-                        View All
-                      </Button>
+                      <h2 className="text-2xl font-semibold">服务列表</h2>
+                      <SearchInput placeholder="Search API..." />
                     </div>
-                    <div className="rounded-3xl border overflow-hidden">
-                      <div className="divide-y">
-                        {tutorials.slice(3, 5).map((tutorial) => (
-                          <motion.div
-                            key={tutorial.title}
-                            whileHover={{ scale: 1.02, y: -5 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="p-4 flex flex-col md:flex-row gap-3"
+                    <table className="w-full table-fixed">
+                      <thead>
+                        <tr className="bg-muted/50 border-b">
+                          <th className="text-left p-4 font-medium text-sm w-1/6">服务名称</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">状态</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">开发者</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">上线时间</th>
+                          <th className="text-left p-4 font-medium text-sm w-1/6">类别</th>
+                          <th className="text-right p-4 font-medium text-sm w-1/6">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {allAPIs.map((api) => (
+                          <motion.tr
+                            key={api.id}
+                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                            className="cursor-pointer"
+                            onClick={() => handleAPIClick(api)}
                           >
-                            <div className="flex-shrink-0">
-                              <div className="relative h-20 w-20 overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <Play className="h-8 w-8 text-white" />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex-1">
-                              <h3 className="font-medium">{tutorial.title}</h3>
-                              <p className="text-sm text-muted-foreground">{tutorial.description}</p>
-                              <div className="mt-2 flex flex-wrap items-center gap-3">
-                                <Badge variant="outline" className="rounded-xl">
-                                  {tutorial.level}
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">{api.name}</span>
+                                <Badge variant="outline" className="rounded-xl text-xs">
+                                  {api.method}
                                 </Badge>
-                                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                  <Clock className="h-3 w-3" />
-                                  {tutorial.duration}
-                                </div>
-                                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                  <Eye className="h-3 w-3" />
-                                  {tutorial.views} views
-                                </div>
                               </div>
-                            </div>
-                            <div className="flex items-center">
-                              <Button variant="ghost" size="sm" className="rounded-xl">
-                                Watch Now
+                            </td>
+                            <td className="p-4">
+                              <Badge 
+                                variant={api.status === "上线" ? "default" : api.status === "测试" ? "secondary" : "outline"}
+                                className={cn(
+                                  "rounded-xl text-xs",
+                                  api.status === "上线" && "bg-green-500 hover:bg-green-600",
+                                  api.status === "测试" && "bg-yellow-500 hover:bg-yellow-600 text-white",
+                                  api.status === "下线" && "bg-gray-400 text-white"
+                                )}
+                              >
+                                {api.status}
+                              </Badge>
+                            </td>
+                            <td className="p-4 text-sm">{api.developer}</td>
+                            <td className="p-4 text-sm text-muted-foreground">{api.launchDate}</td>
+                            <td className="p-4">
+                              <Badge variant="secondary" className="rounded-xl text-xs">
+                                {api.category}
+                              </Badge>
+                            </td>
+                            <td className="p-4 text-right">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-xl"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  // TODO: 处理操作逻辑
+                                }}
+                              >
+                                {api.status === "上线" && "下线"}
+                                {api.status === "测试" && "发布"}
+                                {api.status === "下线" && "测试"}
                               </Button>
-                            </div>
-                          </motion.div>
+                            </td>
+                          </motion.tr>
                         ))}
-                      </div>
-                    </div>
-                  </section>
-
-                  <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">Learning Paths</h2>
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                      <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                        <CardHeader className="pb-2">
-                          <div className="flex items-center justify-between">
-                            <Badge className="rounded-xl bg-blue-500">Beginner</Badge>
-                            <Award className="h-5 w-5 text-amber-500" />
-                          </div>
-                          <CardTitle className="mt-2">UI/UX Design Fundamentals</CardTitle>
-                          <CardDescription>Master the basics of user interface and experience design</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between text-sm">
-                              <span>8 courses • 24 hours</span>
-                              <span>4.8 ★</span>
-                            </div>
-                            <Progress value={30} className="h-2 rounded-xl" />
-                            <p className="text-xs text-muted-foreground">30% completed</p>
-                          </div>
-                        </CardContent>
-                        <CardFooter>
-                          <Button variant="secondary" className="w-full rounded-2xl">
-                            Continue Learning
-                          </Button>
-                        </CardFooter>
-                      </Card>
-
-                      <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                        <CardHeader className="pb-2">
-                          <div className="flex items-center justify-between">
-                            <Badge className="rounded-xl bg-amber-500">Intermediate</Badge>
-                            <Award className="h-5 w-5 text-amber-500" />
-                          </div>
-                          <CardTitle className="mt-2">Digital Illustration Mastery</CardTitle>
-                          <CardDescription>Create stunning digital artwork and illustrations</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between text-sm">
-                              <span>12 courses • 36 hours</span>
-                              <span>4.9 ★</span>
-                            </div>
-                            <Progress value={0} className="h-2 rounded-xl" />
-                            <p className="text-xs text-muted-foreground">Not started</p>
-                          </div>
-                        </CardContent>
-                        <CardFooter>
-                          <Button variant="secondary" className="w-full rounded-2xl">
-                            Start Learning
-                          </Button>
-                        </CardFooter>
-                      </Card>
-
-                      <Card className="overflow-hidden rounded-3xl border-2 hover:border-primary/50 transition-all duration-300">
-                        <CardHeader className="pb-2">
-                          <div className="flex items-center justify-between">
-                            <Badge className="rounded-xl bg-red-500">Advanced</Badge>
-                            <Award className="h-5 w-5 text-amber-500" />
-                          </div>
-                          <CardTitle className="mt-2">Motion Graphics & Animation</CardTitle>
-                          <CardDescription>Create professional motion graphics and animations</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between text-sm">
-                              <span>10 courses • 30 hours</span>
-                              <span>4.7 ★</span>
-                            </div>
-                            <Progress value={0} className="h-2 rounded-xl" />
-                            <p className="text-xs text-muted-foreground">Not started</p>
-                          </div>
-                        </CardContent>
-                        <CardFooter>
-                          <Button variant="secondary" className="w-full rounded-2xl">
-                            Start Learning
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    </div>
+                      </tbody>
+                    </table>
                   </section>
                 </TabsContent>
               </motion.div>
