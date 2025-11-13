@@ -46,6 +46,7 @@ const sidebarItems = [
       { title: "Approval", url: "#" },
       { title: "Permission", url: "#" },
       { title: "User Management", url: "#" },
+      { title: "线下 API 管理", url: "/offline-api" },
     ],
   },
 ]
